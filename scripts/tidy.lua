@@ -2,12 +2,35 @@ newaction {
     trigger     = "tidy",
     description = "Run clang-tidy on all source files",
     execute = function()
+        local dirs = {
+            "Engine/src",
+            "Engine/include",
+            "Sandbox/Game/src",
+        }
         print("tidy: Generating compile commands...")
-        os.execute("premake5 export-compile-commands")
+        os.execute(_PREMAKE_COMMAND .. " export-compile-commands")
 
-        print("tidy: Running clang-tidy...")
-        local result = os.execute("run-clang-tidy -p compile_commands/debug/ -j4")
-        if result ~= 0 then
+        local files = {}
+        for _, dir in ipairs(dirs) do
+            for _, f in ipairs(os.matchfiles(dir .. "/**.cpp")) do
+                table.insert(files, f)
+            end
+            for _, f in ipairs(os.matchfiles(dir .. "/**.hpp")) do
+                table.insert(files, f)
+            end
+        end
+
+        local failed = false
+        print("tidy: Running clang-tidy on " .. #files .. " files...")
+        for _, f in ipairs(files) do
+            local result = os.execute("clang-tidy " .. f .. " -p compile_commands/debug/")
+            if result ~= 0 then
+                print("  FAIL: " .. f)
+                failed = true
+            end
+        end
+
+        if failed then
             print("tidy: clang-tidy found issues.")
             os.exit(1)
         else

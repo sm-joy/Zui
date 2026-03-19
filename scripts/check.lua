@@ -1,10 +1,12 @@
-newaction {
-    trigger     = "check",
+newaction({
+    trigger = "check",
     description = "Run clang-format and clang-tidy together",
     execute = function()
+        print("PREMAKE_COMMAND: " .. _PREMAKE_COMMAND)
+        print("ROOT: " .. path.getabsolute("."))
         print("=== check: Formatting ===")
-        os.execute("premake5 format")
+        os.execute(_PREMAKE_COMMAND .. " format")
         print("\n=== check: Tidy ===")
-        os.execute("premake5 tidy")
-    end
-}
+        os.execute(_PREMAKE_COMMAND .. " tidy")
+    end,
+})
