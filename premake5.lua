@@ -4,6 +4,7 @@ require "scripts/format-check"
 require "scripts/tidy"
 require "scripts/check"
 require "scripts/build"
+require "scripts/build-deps"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
