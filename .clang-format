@@ -53,7 +53,6 @@ BreakInheritanceList: BeforeColon
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
 
-SpaceBeforeTemplateCloser: false
 SpacesInAngles: Never
 
 AccessModifierOffset: -4

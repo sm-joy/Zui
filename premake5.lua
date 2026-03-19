@@ -3,12 +3,13 @@ require "scripts/format"
 require "scripts/format-check"
 require "scripts/tidy"
 require "scripts/check"
+require "scripts/build"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 workspace "Zui"
-	architecture "x64"
     location ("build/" .. _ACTION)
+	architecture "x64"
 
 	configurations
 	{
@@ -52,7 +53,12 @@ workspace "Zui"
 
 
 project "Zui"
-    location ("build/" .. _ACTION  .. "/Zui")
+    if _ACTION == "export-compile-commands" then
+        location (ROOT)
+    else
+        location ("build/" .. _ACTION .. "/Zui")
+    end
+
     kind "StaticLib"
     language "C++"
     cppdialect "C++20"
@@ -61,11 +67,11 @@ project "Zui"
     objdir ("build/int/" .. outputdir .. "/%{prj.name}")
 
     files {
-        "%Engine/include/**.hpp",
-        "%Engine/include/**.h",
-        "%Engine/src/**.hpp",
-        "%Engine/src/**.h",
-        "%Engine/src/**.cpp",
+        "Engine/include/**.hpp",
+        "Engine/include/**.h",
+        "Engine/src/**.hpp",
+        "Engine/src/**.h",
+        "Engine/src/**.cpp",
     }
 
     includedirs {
@@ -88,7 +94,11 @@ project "Zui"
     filter{}
 
 project "Game"
-    location ("build/" .. _ACTION  .. "/Game")
+    if _ACTION == "export-compile-commands" then
+        location (ROOT)
+    else
+        location ("build/" .. _ACTION .. "/Game")
+    end
     kind "ConsoleApp"
 	language "C++"
     cppdialect "C++20"
