@@ -62,7 +62,7 @@ public:
     void Begin(const std::string &label);
     void End(const std::string &label);
 
-    double GetDuration(const std::string &label);
+    float GetDuration(const std::string &label);
 
 private:
     std::unordered_map<std::string, TimePoint> m_beginTimePoint;

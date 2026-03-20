@@ -1,6 +1,8 @@
 #include "Time.hpp"
 
-zui::Clock::Clock()
+namespace zui {
+
+Clock::Clock()
     : m_startTime(HighResClock::now()), m_deltaTime(0.0f), m_rawDeltaTime(0.0f), m_totalTime(0.0f), m_timeScale(1.0f),
       m_isPaused(false), m_frameCount(0), m_fpsUpdateInterval(1.0f), m_fpsAccumulator(0.0f), m_fps(0.0f),
       m_useFixedTimestep(false), m_fixedTimestep(1.0f / 60.0f), m_fixedTimeAccumulator(0.0f) {
@@ -8,7 +10,7 @@ zui::Clock::Clock()
     m_lastTime    = m_startTime;
 }
 
-void zui::Clock::Tick() {
+void Clock::Tick() {
     if (m_isPaused) {
         m_deltaTime    = 0.0f;
         m_rawDeltaTime = 0.0f;
@@ -32,37 +34,37 @@ void zui::Clock::Tick() {
     }
 }
 
-void zui::Clock::Pause() {
+void Clock::Pause() {
     m_isPaused = true;
 }
-void zui::Clock::Resume() {
+void Clock::Resume() {
     m_isPaused = false;
 }
-void zui::Clock::TogglePause() {
+void Clock::TogglePause() {
     m_isPaused = !m_isPaused;
 }
-bool zui::Clock::IsPaused() const {
+bool Clock::IsPaused() const {
     return m_isPaused;
 }
 
-float zui::Clock::GetFps() const {
+float Clock::GetFps() const {
     return m_fps;
 }
-float zui::Clock::GetDeltaTime() const {
+float Clock::GetDeltaTime() const {
     return m_deltaTime;
 }
-double zui::Clock::GetElapsedTime() const {
+double Clock::GetElapsedTime() const {
     return m_totalTime;
 };
 
-float zui::Clock::GetTimeScale() const {
+float Clock::GetTimeScale() const {
     return m_timeScale;
 }
-void zui::Clock::SetTimeScale(float timeScale) {
+void Clock::SetTimeScale(float timeScale) {
     m_timeScale = (timeScale > 0.0f) ? timeScale : 0.0f;
 }
 
-void zui::Clock::Reset() {
+void Clock::Reset() {
     m_startTime            = HighResClock::now();
     m_currentTime          = m_startTime;
     m_lastTime             = m_startTime;
@@ -74,19 +76,19 @@ void zui::Clock::Reset() {
     m_fixedTimeAccumulator = 0.0f;
 }
 
-void zui::Clock::SetFpsUpdateInterval(float interval) {
+void Clock::SetFpsUpdateInterval(float interval) {
     m_fpsUpdateInterval = (interval > 0.0f) ? interval : 1.0f;
 }
 
-void zui::Profiler::Begin(const std::string &label) {
+void Profiler::Begin(const std::string &label) {
     m_beginTimePoint.insert_or_assign(label, HighResClock::now());
 }
 
-void zui::Profiler::End(const std::string &label) {
+void Profiler::End(const std::string &label) {
     m_endTimePoint.insert_or_assign(label, HighResClock::now());
 }
 
-double zui::Profiler::GetDuration(const std::string &label) {
+float Profiler::GetDuration(const std::string &label) {
     std::unordered_map<std::string, TimePoint>::iterator it = m_beginTimePoint.find(label);
     if (it == m_beginTimePoint.end()) {
         return 0.0f;
@@ -102,3 +104,5 @@ double zui::Profiler::GetDuration(const std::string &label) {
 
     return Duration(endTimePoint - beginTimePoint).count();
 }
+
+} // namespace zui
