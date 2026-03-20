@@ -133,4 +133,4 @@ project "Game"
 		}
 
 
-include "vendor/glfw"
+include "vendor/build-scripts/glfw"
