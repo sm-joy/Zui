@@ -77,12 +77,15 @@ project "Zui"
 
     includedirs {
         "Engine/include",
+        "vendor/spdlog/include"
     }
 
     links {
+        "spdlog"
     }
 
     libdirs {
+        "vendor/spdlog/build"
     }
 
     linkoptions { "-static" }
