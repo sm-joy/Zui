@@ -132,3 +132,5 @@ project "Game"
 			"ZUI_PLATFORM_WINDOWS"
 		}
 
+
+include "vendor/glfw"
