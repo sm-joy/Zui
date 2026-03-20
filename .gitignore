@@ -1,3 +1,4 @@
 build/
 vendor/spdlog/build/
 .cache
+compile_commands.json
