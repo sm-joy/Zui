@@ -23,8 +23,8 @@ NamespaceIndentation: None
 CompactNamespaces: false
 FixNamespaceComments: true
 
-
-AlignConsecutiveAssignments: Consecutive
+PointerAlignment: Left
+AlignConsecutiveAssignments: None
 AlignConsecutiveDeclarations: None
 AlignOperands: Align
 AlignTrailingComments:

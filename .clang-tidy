@@ -3,7 +3,7 @@ Checks: >
   -*,
   bugprone-*,
   clang-analyzer-*,
-  cppcoreguidelines-owning-memory,
+  -cppcoreguidelines-owning-memory,
   cppcoreguidelines-special-member-functions,
   modernize-use-nullptr,
   modernize-use-override,
@@ -93,3 +93,8 @@ CheckOptions:
     value: CamelCase
   - key: readability-identifier-naming.TemplateTemplateParameterCase
     value: CamelCase
+
+  - key: readability-identifier-naming.StaticMemberCase
+    value: camelBack
+  - key: readability-identifier-naming.StaticMemberPrefix
+    value: s_
