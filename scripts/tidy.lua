@@ -7,11 +7,7 @@ newaction({
             "Engine/include",
             "Sandbox/Game/src",
         }
-        print("tidy: Generating compile commands...")
-        os.execute(_PREMAKE_COMMAND .. " export-compile-commands")
-
-        print("tidy: Copying compile_commands to the root directory...")
-        os.copyfile("build/export-compile-commands/compile_commands/debug.json", "compile_commands.json")
+        os.execute(_PREMAKE_COMMAND .. " compile-commands")
 
         local files = {}
         for _, dir in ipairs(dirs) do
