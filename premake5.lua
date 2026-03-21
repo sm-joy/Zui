@@ -7,13 +7,18 @@ require "scripts/build"
 require "scripts/build-deps"
 require "scripts/compile-commands"
 
-outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-IncludeDir = {}
-IncludeDir["spdlog"] = "vendor/spdlog/include"
+
+ROOT = path.getabsolute(".")
+OUTPUT_DIR_CONFIG = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+
+IncludeDir = {
+    spdlog = ROOT .. "/vendor/spdlog/include",
+    glfw = ROOT .. "/vendor/glfw/include"
+}
 
 
 workspace "Zui"
-    location ("build/" .. _ACTION)
+    location (ROOT .. "/build/" .. _ACTION)
 	architecture "x64"
     toolset "clang"
 
@@ -56,85 +61,9 @@ workspace "Zui"
     filter {}
 
 
+    include "Engine"
+
+    include "Sandbox/Game"
 
 
-project "Zui"
-    if _ACTION == "export-compile-commands" then
-        location (ROOT)
-    else
-        location ("build/" .. _ACTION .. "/Zui")
-    end
-
-    kind "StaticLib"
-    language "C++"
-    cppdialect "C++20"
-
-    targetdir ("build/bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("build/int/" .. outputdir .. "/%{prj.name}")
-
-    files {
-        "Engine/include/**.hpp",
-        "Engine/include/**.h",
-        "Engine/src/**.hpp",
-        "Engine/src/**.h",
-        "Engine/src/**.cpp",
-    }
-
-    includedirs {
-        "Engine/include",
-        "%{IncludeDir.spdlog}",
-    }
-
-    links {
-    }
-
-    libdirs {
-    }
-
-    linkoptions { "-static" }
-
-    filter "system:windows"
-        systemversion "latest"
-
-        links { }
-
-    filter{}
-
-project "Game"
-    if _ACTION == "export-compile-commands" then
-        location (ROOT)
-    else
-        location ("build/" .. _ACTION .. "/Game")
-    end
-    kind "ConsoleApp"
-	language "C++"
-    cppdialect "C++20"
-
-    targetdir ("build/bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("build/int/" .. outputdir .. "/%{prj.name}")
-
-    files {
-        "Sandbox/%{prj.name}/src/**.hpp",
-        "Sandbox/%{prj.name}/src/**.h",
-        "Sandbox/%{prj.name}/src/**.cpp",
-    }
-
-    includedirs {
-        "Engine/include",
-        "%{IncludeDir.spdlog}",
-    }
-
-    links {
-        "Zui"
-    }
-
-    filter "system:windows"
-		systemversion "latest"
-
-		defines
-		{
-			"ZUI_PLATFORM_WINDOWS"
-		}
-
-
--- include "vendor/build-scripts/glfw"
+include "vendor/build-scripts/glfw"
