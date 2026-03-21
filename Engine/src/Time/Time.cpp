@@ -7,31 +7,33 @@ Clock::Clock()
       m_isPaused(false), m_frameCount(0), m_fpsUpdateInterval(1.0f), m_fpsAccumulator(0.0f), m_fps(0.0f),
       m_useFixedTimestep(false), m_fixedTimestep(1.0f / 60.0f), m_fixedTimeAccumulator(0.0f) {
     m_currentTime = m_startTime;
-    m_lastTime    = m_startTime;
+    m_lastTime = m_startTime;
 }
 
-void Clock::Tick() {
+float Clock::Tick() {
     if (m_isPaused) {
-        m_deltaTime    = 0.0f;
+        m_deltaTime = 0.0f;
         m_rawDeltaTime = 0.0f;
-        return;
+        return 0.0f;
     }
 
-    m_lastTime    = m_currentTime;
+    m_lastTime = m_currentTime;
     m_currentTime = HighResClock::now();
 
-    Duration dt    = m_currentTime - m_lastTime;
+    Duration dt = m_currentTime - m_lastTime;
     m_rawDeltaTime = dt.count();
-    m_deltaTime    = m_rawDeltaTime * m_timeScale;
+    m_deltaTime = m_rawDeltaTime * m_timeScale;
     m_totalTime += m_deltaTime;
 
     m_frameCount++;
     m_fpsAccumulator += m_deltaTime;
     if (m_fpsAccumulator >= m_fpsUpdateInterval) {
-        m_fps            = static_cast<float>(m_frameCount) / m_fpsAccumulator;
+        m_fps = static_cast<float>(m_frameCount) / m_fpsAccumulator;
         m_fpsAccumulator = 0.0f;
-        m_frameCount     = 0;
+        m_frameCount = 0;
     }
+
+    return m_deltaTime;
 }
 
 void Clock::Pause() {
@@ -65,14 +67,14 @@ void Clock::SetTimeScale(float timeScale) {
 }
 
 void Clock::Reset() {
-    m_startTime            = HighResClock::now();
-    m_currentTime          = m_startTime;
-    m_lastTime             = m_startTime;
-    m_deltaTime            = 0.0f;
-    m_totalTime            = 0.0f;
-    m_frameCount           = 0;
-    m_fpsAccumulator       = 0.0f;
-    m_fps                  = 0.0f;
+    m_startTime = HighResClock::now();
+    m_currentTime = m_startTime;
+    m_lastTime = m_startTime;
+    m_deltaTime = 0.0f;
+    m_totalTime = 0.0f;
+    m_frameCount = 0;
+    m_fpsAccumulator = 0.0f;
+    m_fps = 0.0f;
     m_fixedTimeAccumulator = 0.0f;
 }
 
@@ -80,27 +82,27 @@ void Clock::SetFpsUpdateInterval(float interval) {
     m_fpsUpdateInterval = (interval > 0.0f) ? interval : 1.0f;
 }
 
-void Profiler::Begin(const std::string &label) {
+void Profiler::Begin(const std::string& label) {
     m_beginTimePoint.insert_or_assign(label, HighResClock::now());
 }
 
-void Profiler::End(const std::string &label) {
+void Profiler::End(const std::string& label) {
     m_endTimePoint.insert_or_assign(label, HighResClock::now());
 }
 
-float Profiler::GetDuration(const std::string &label) {
+float Profiler::GetDuration(const std::string& label) {
     std::unordered_map<std::string, TimePoint>::iterator it = m_beginTimePoint.find(label);
     if (it == m_beginTimePoint.end()) {
         return 0.0f;
     }
-    TimePoint &beginTimePoint = it->second;
+    TimePoint& beginTimePoint = it->second;
 
     it = m_endTimePoint.find(label);
     if (it == m_endTimePoint.end()) {
         return 0.0f;
     }
 
-    TimePoint &endTimePoint = it->second;
+    TimePoint& endTimePoint = it->second;
 
     return Duration(endTimePoint - beginTimePoint).count();
 }

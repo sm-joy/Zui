@@ -6,15 +6,15 @@
 namespace zui {
 
 using HighResClock = std::chrono::high_resolution_clock;
-using TimePoint    = std::chrono::time_point<HighResClock>;
-using Duration     = std::chrono::duration<float>;
+using TimePoint = std::chrono::time_point<HighResClock>;
+using Duration = std::chrono::duration<float>;
 
 class Clock {
 public:
     Clock();
     ~Clock() = default;
 
-    void Tick();
+    float Tick();
 
     void Pause();
     void Resume();
@@ -56,13 +56,13 @@ private:
 
 class Profiler {
 public:
-    Profiler()  = default;
+    Profiler() = default;
     ~Profiler() = default;
 
-    void Begin(const std::string &label);
-    void End(const std::string &label);
+    void Begin(const std::string& label);
+    void End(const std::string& label);
 
-    float GetDuration(const std::string &label);
+    float GetDuration(const std::string& label);
 
 private:
     std::unordered_map<std::string, TimePoint> m_beginTimePoint;
