@@ -5,12 +5,17 @@ require "scripts/tidy"
 require "scripts/check"
 require "scripts/build"
 require "scripts/build-deps"
+require "scripts/compile-commands"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+IncludeDir = {}
+IncludeDir["spdlog"] = "vendor/spdlog/include"
+
 
 workspace "Zui"
     location ("build/" .. _ACTION)
 	architecture "x64"
+    toolset "clang"
 
 	configurations
 	{
@@ -77,15 +82,13 @@ project "Zui"
 
     includedirs {
         "Engine/include",
-        "vendor/spdlog/include"
+        "%{IncludeDir.spdlog}",
     }
 
     links {
-        "spdlog"
     }
 
     libdirs {
-        "vendor/spdlog/build"
     }
 
     linkoptions { "-static" }
@@ -117,7 +120,8 @@ project "Game"
     }
 
     includedirs {
-        "Engine/include"
+        "Engine/include",
+        "%{IncludeDir.spdlog}",
     }
 
     links {
@@ -133,4 +137,4 @@ project "Game"
 		}
 
 
-include "vendor/build-scripts/glfw"
+-- include "vendor/build-scripts/glfw"
