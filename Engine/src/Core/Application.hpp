@@ -1,16 +1,21 @@
 #pragma once
+#include "API.hpp"
+#include "../Window/WindowConfig.hpp"
 
 namespace zui {
 
-class Application {
+class ZUI_API Application {
 public:
     Application();
     virtual ~Application() = default;
 
     virtual void OnInit() {}
     virtual void OnEvent();
+
     virtual void OnUpdate(float dt);
     virtual void OnShutdown() {}
+
+    virtual WinConfig SetWindowConfig() { return WinConfig{}; }
 
 private:
     friend class Engine;

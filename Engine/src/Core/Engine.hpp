@@ -1,12 +1,13 @@
 #pragma once
+#include "API.hpp"
 #include "../Time/Time.hpp"
-#include "Application.hpp"
+#include "../Window/Window.hpp"
 
 namespace zui {
 
 class Application;
 
-class Engine {
+class ZUI_API Engine {
 public:
     static Engine& GetInstance() {
         static Engine sInstance;
@@ -25,6 +26,7 @@ private:
     Engine& operator=(Engine&&) = delete;
 
     Clock m_clock;
+    Window m_window;
 };
 
 } // namespace zui

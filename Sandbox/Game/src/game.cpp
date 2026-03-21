@@ -1,7 +1,11 @@
 #include <Zui.hpp>
 class Game: public zui::Application {
-    void OnInit() override {
-        LOGGER_INFO("Hello from Game!");
+    zui::WinConfig SetWindowConfig() override {
+        return {
+            .Title = "Game",
+            .Width = 500,
+            .Height = 500
+        };
     }
 };
 
