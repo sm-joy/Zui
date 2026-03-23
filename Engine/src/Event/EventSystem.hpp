@@ -58,7 +58,6 @@ inline EventDispatcher Dispatch(Event& event) {
     return EventDispatcher(event);
 }
 
-
 } // namespace zui
 
 #define EVENT_CLASS_TYPE(type)                                                                                         \

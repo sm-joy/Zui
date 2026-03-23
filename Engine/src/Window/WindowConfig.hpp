@@ -16,10 +16,11 @@ struct WinConfig {
     bool Vsync = false;
     WindowMode Mode = WindowMode::WINDOWED;
 
-    std::function<void(Event&)> EventEmitCallback = [](Event&) {};
+    std::function<void(Event&)> EventEmitCallback = [](Event&) {
+    };
 
     constexpr int GetCenterX() const { return Width / 2; }
     constexpr int GetCenterY() const { return Height / 2; }
 };
 
-}
+} // namespace zui

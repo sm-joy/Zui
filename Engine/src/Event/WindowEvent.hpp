@@ -17,7 +17,7 @@ public:
     inline std::uint32_t GetWidth() const { return m_width; }
     inline std::uint32_t GetHeight() const { return m_height; }
 
-//     std::string ToString() const override { return {"WindowResizeEvent: {}, {}", m_width, m_height}; }
+    //     std::string ToString() const override { return {"WindowResizeEvent: {}, {}", m_width, m_height}; }
 
     EVENT_CLASS_TYPE(WINDOW_RESIZE);
 
