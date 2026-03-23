@@ -15,8 +15,15 @@ public:
     GLFWwindow* GetWindowHandle() const;
     bool ShouldClose() const;
 
+    template <typename TFunc, std::enable_if_t<std::is_invocable_r_v<void, TFunc, Event&>, int> = 0>
+    void SetEventEmitCallback(TFunc&& callback) {
+        m_winConfig.EventEmitCallback = std::forward<TFunc>(callback);
+    }
+
 private:
     WinConfig m_winConfig;
-    GLFWwindow* m_window;
+    GLFWwindow* m_windowHandle;
+
+    void SetGlfwCallbacks();
 };
 } // namespace zui

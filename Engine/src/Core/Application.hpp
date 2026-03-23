@@ -4,13 +4,15 @@
 
 namespace zui {
 
+class Event;
+
 class ZUI_API Application {
 public:
     Application();
     virtual ~Application() = default;
 
     virtual void OnInit() {}
-    virtual void OnEvent();
+    virtual void OnEvent(Event& event);
 
     virtual void OnUpdate(float dt);
     virtual void OnShutdown() {}

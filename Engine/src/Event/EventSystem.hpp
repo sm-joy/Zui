@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <functional>
 #include <string>
 
 namespace zui {
@@ -21,10 +20,11 @@ enum class EventType : std::uint8_t {
     MOUSE_MOVE,
     MOUSE_SCROLL,
 
-    // APP_START,
-    // APP_STOP,
-    // APP_UPDATE,
-    // APP_RENDER,
+    APP_START,
+    APP_STOP,
+    APP_UPDATE,
+    APP_RENDER,
+
     COUNT
 };
 
@@ -39,25 +39,25 @@ public:
 };
 
 class EventDispatcher {
-    template <typename T> using EventHandler = std::function<bool(T&)>;
-
 public:
     EventDispatcher(Event& event) : m_event(event) {}
 
-    template <typename T> bool On(EventHandler<T> handler) {
-        if (m_event.Handled)
-            return false;
-
-        if (m_event.GetEventType() == T::GetStaticType()) {
-            m_event.Handled = handler(static_cast<T&>(m_event));
-            return true;
+    template <typename TEvent, typename TFunc> EventDispatcher& On(TFunc&& handler) {
+        if (!m_event.Handled && m_event.GetEventType() == TEvent::GetStaticType()) {
+            m_event.Handled = std::forward<TFunc>(handler)(static_cast<TEvent&>(m_event));
         }
-        return false;
+
+        return *this;
     }
 
 private:
     Event& m_event;
 };
+
+inline EventDispatcher Dispatch(Event& event) {
+    return EventDispatcher(event);
+}
+
 
 } // namespace zui
 

@@ -14,8 +14,8 @@ public:
         return sInstance;
     }
 
-    void Init();
-    void Run(Application* app);
+    void Init(Application* app);
+    void Run();
 
 private:
     Engine() = default;
@@ -27,6 +27,7 @@ private:
 
     Clock m_clock;
     Window m_window;
+    Application* m_app;
 };
 
 } // namespace zui

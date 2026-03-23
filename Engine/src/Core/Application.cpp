@@ -1,10 +1,17 @@
 #include "Application.hpp"
 
+#include "../Event/Event.hpp"
+
 namespace zui {
 
-Application::Application() : m_running(true) {}
+Application::Application() {}
 
-void Application::OnEvent() {}
+void Application::OnEvent(Event& event) {
+    Dispatch(event).On<WindowCloseEvent>([this](WindowCloseEvent& e) {
+        m_running = false;
+        return true;
+    });
+}
 
 void Application::OnUpdate(float dt) {}
 
