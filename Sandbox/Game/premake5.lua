@@ -4,14 +4,12 @@
     else
         location (ROOT .. "/build/" .. _ACTION .. "/Game")
     end
+
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++20"
 
-    targetdir (ROOT .. "/build/bin/" .. OUTPUT_DIR_CONFIG .. "/%{prj.name}")
-    objdir (ROOT .. "/build/int/" .. OUTPUT_DIR_CONFIG .. "/%{prj.name}")
-
-    files {
+     files {
         ROOT .. "/Sandbox/%{prj.name}/src/**.hpp",
         ROOT .. "/Sandbox/%{prj.name}/src/**.cpp",
     }
@@ -22,13 +20,6 @@
     }
 
     links { "Zui" }
-
-    filter "system:windows"
-        systemversion "latest"
-
-        defines {
-            "ZUI_PLATFORM_WINDOWS"
-        }
 
     filter {}
 

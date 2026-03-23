@@ -6,13 +6,8 @@ project "Zui"
     end
 
     kind "SharedLib"
-    language "C++"
-    cppdialect "C++20"
 
     defines { "ZUI_BUILD_DLL" }
-
-    targetdir (ROOT .. "/build/bin/" .. OUTPUT_DIR_CONFIG .. "/%{prj.name}")
-    objdir (ROOT .. "/build/int/" .. OUTPUT_DIR_CONFIG .. "/%{prj.name}")
 
     files {
         ROOT .. "/Engine/include/**.hpp",
@@ -26,7 +21,7 @@ project "Zui"
         IncludeDir.glfw,
     }
 
-    links { "glfw" }
+    links { "glfw", "spdlog" }
 
 
     postbuildcommands {
@@ -35,8 +30,6 @@ project "Zui"
     }
 
     filter "system:windows"
-        systemversion "latest"
-
         links {
             "opengl32",
             "gdi32",

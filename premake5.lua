@@ -20,10 +20,18 @@ IncludeDir = {
 workspace "Zui"
     location (ROOT .. "/build/" .. _ACTION)
 	architecture "x64"
+    language "C++"
+    cppdialect "C++20"
     toolset "clang"
 
-	configurations
-	{
+
+
+    targetdir (ROOT .. "/build/bin/" .. OUTPUT_DIR_CONFIG .. "/%{prj.name}")
+    objdir (ROOT .. "/build/int/" .. OUTPUT_DIR_CONFIG .. "/%{prj.name}")
+
+
+
+	configurations {
 		"Debug",
 		"Release",
 		"Distribution"
@@ -62,8 +70,8 @@ workspace "Zui"
 
 
     include "Engine"
-
     include "Sandbox/Game"
 
+    include "vendor/build-scripts/glfw"
+    include "vendor/build-scripts/spdlog"
 
-include "vendor/build-scripts/glfw"

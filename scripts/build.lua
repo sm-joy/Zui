@@ -49,10 +49,6 @@ newaction({
     description = "Build and run the project",
     execute = function()
         local config = _OPTIONS["config"] or "debug"
-        local buildCmd = _PREMAKE_COMMAND .. " make-build --config=" .. config
-        if not os.execute(buildCmd) then
-            os.exit(1)
-        end
         config = (string.sub(config, 1, 1)):upper() .. string.sub(config, 2, -1)
         local exePath = ".\\build\\bin\\" .. config .. "-windows-x86_64\\Game\\Game.exe"
         os.execute(exePath)
