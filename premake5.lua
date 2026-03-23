@@ -5,6 +5,7 @@ require "scripts/tidy"
 require "scripts/check"
 require "scripts/build"
 require "scripts/compile-commands"
+require "scripts/vendor"
 
 
 ROOT = path.getabsolute(".")
@@ -12,7 +13,8 @@ OUTPUT_DIR_CONFIG = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {
     spdlog = ROOT .. "/vendor/spdlog/include",
-    glfw = ROOT .. "/vendor/glfw/include"
+    glfw = ROOT .. "/vendor/glfw/include",
+    glad = ROOT .. "/vendor/glad/include"
 }
 
 

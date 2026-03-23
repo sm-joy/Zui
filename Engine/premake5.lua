@@ -13,12 +13,15 @@ project "Zui"
         ROOT .. "/Engine/include/**.hpp",
         ROOT .. "/Engine/src/**.hpp",
         ROOT .. "/Engine/src/**.cpp",
+
+        ROOT .. "/vendor/glad/src/gl.c",
     }
 
     includedirs {
         ROOT .. "/Engine/include",
         IncludeDir.spdlog,
         IncludeDir.glfw,
+        IncludeDir.glad,
     }
 
     links { "glfw", "spdlog" }
