@@ -1,6 +1,7 @@
 #include "Engine.hpp"
 
 #include "../Logger/Log.hpp"
+#include "../Values/Color.hpp"
 #include "Application.hpp"
 
 namespace zui {
@@ -12,6 +13,8 @@ void Engine::Init(Application* app) {
     Logger::Init();
 
     m_window.SetEventEmitCallback([this](Event& event) { m_app->OnEvent(event); });
+
+    m_renderer.SetClearColor(colors::BLUE);
 }
 
 void Engine::Run() {

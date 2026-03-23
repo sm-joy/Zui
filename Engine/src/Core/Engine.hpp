@@ -2,6 +2,7 @@
 #include "../Time/Time.hpp"
 #include "../Window/Window.hpp"
 #include "API.hpp"
+#include "../Renderer/Renderer.hpp"
 
 namespace zui {
 
@@ -27,6 +28,7 @@ private:
 
     Clock m_clock;
     Window m_window;
+    Renderer m_renderer;
     Application* m_app;
 };
 
