@@ -40,10 +40,6 @@ CheckOptions:
   - key: readability-identifier-naming.StructCase
     value: CamelCase
 
-  # Interfaces / Abstract classes → IPascalCase
-  - key: readability-identifier-naming.AbstractClassPrefix
-    value: I
-
   # Functions and Methods → PascalCase
   - key: readability-identifier-naming.FunctionCase
     value: CamelCase
