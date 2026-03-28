@@ -19,4 +19,8 @@ void Logger::Init() {
     s_logger->flush_on(spdlog::level::err);
 }
 
+std::shared_ptr<spdlog::logger>& Logger::GetLogger() {
+    return s_logger;
+}
+
 } // namespace zui
