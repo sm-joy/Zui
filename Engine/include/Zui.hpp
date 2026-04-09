@@ -3,3 +3,7 @@
 #include "../src/Core/EntryPoint.hpp"
 #include "../src/Logger/Log.hpp"
 #include "../src/Values/Color.hpp"
+#include "../src/Renderer/Renderer.hpp"
+#include "../src/Renderer/Shader.hpp"
+#include "../src/Renderer/VertexBuffer.hpp"
+#include "../src/Renderer/VertexArray.hpp"
