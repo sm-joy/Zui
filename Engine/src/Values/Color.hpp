@@ -28,7 +28,6 @@ struct Color {
 
 namespace colors {
 
-inline constexpr Color TRANSPARENT{0, 0, 0, 0};
 inline constexpr Color BLACK{0, 0, 0};
 inline constexpr Color WHITE{255, 255, 255};
 
