@@ -1,9 +1,12 @@
 #pragma once
 #include "WindowConfig.hpp"
+#include <memory>
 
 struct GLFWwindow;
 
 namespace zui {
+
+class GraphicsContext;
 
 class Window {
 public:
@@ -21,8 +24,12 @@ public:
 
 private:
     WinConfig m_winConfig;
-    GLFWwindow* m_windowHandle;
+    GLFWwindow* m_windowHandle = nullptr;
+    bool m_glfwInitialized = false;
+    std::unique_ptr<GraphicsContext> m_graphicsContext;
 
+    bool CreateNativeWindow();
+    void DestroyWindow();
     void SetGlfwCallbacks();
 };
 } // namespace zui
