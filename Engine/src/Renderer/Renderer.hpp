@@ -1,26 +1,29 @@
 #pragma once
+#include "../Core/API.hpp"
 #include "../Values/Color.hpp"
+#include "RendererConfig.hpp"
 
-#include <cstdint>
+#include <memory>
 
 namespace zui {
 
-enum class RenderMode : std::uint8_t { RENDER_2D, RENDER_3D };
+class Shader;
+class VertexArray;
 
-class Renderer {
+class ZUI_API Renderer {
 public:
-    Renderer(RenderMode mode = RenderMode::RENDER_2D);
-    ~Renderer();
+    static void Init();
+    static void Shutdown();
+    static void OnWindowResize(int width, int height);
 
-    RenderMode GetRenderMode() const;
-    void Clear() const;
-    void SetRenderMode(RenderMode mode);
-    void SetClearColor(const Color& color);
+    static void SetClearColor(const Color& color);
+    static void Clear();
 
-private:
-    RenderMode m_renderMode;
-    unsigned int m_renderClearFlags;
-    Color m_clearColor;
+    static void BeginScene();
+    static void EndScene();
+    static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& va);
+
+    static GraphicsAPI GetAPI();
 };
 
 } // namespace zui

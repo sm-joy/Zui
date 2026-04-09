@@ -1,45 +1,51 @@
 #include "Renderer.hpp"
-#include <glad/gl.h>
-#include <GLFW/glfw3.h>
+
+#include "../Logger/Log.hpp"
+#include "RenderCommand.hpp"
+#include "RendererAPI.hpp"
+#include "Shader.hpp"
+#include "VertexArray.hpp"
 
 namespace zui {
 
-Renderer::Renderer(RenderMode mode) : m_renderMode(mode), m_clearColor{}, m_renderClearFlags(GL_COLOR_BUFFER_BIT) {
-    int version = gladLoadGL(glfwGetProcAddress);
-
-    if (version == 0) {
-        // log error
-        return;
-    }
-
-    glEnable(GL_BLEND);
-
-    SetRenderMode(mode);
-}
-Renderer::~Renderer() {}
-
-void Renderer::SetRenderMode(RenderMode mode) {
-    m_renderMode = mode;
-    if (mode == RenderMode::RENDER_2D) {
-        m_renderClearFlags &= ~GL_DEPTH_BUFFER_BIT;
-        glDisable(GL_DEPTH_TEST);
-    } else if (mode == RenderMode::RENDER_3D) {
-        m_renderClearFlags |= GL_DEPTH_BUFFER_BIT;
-        glEnable(GL_DEPTH_TEST);
-    }
+void Renderer::Init() {
+    RenderCommand::Init();
+    RenderCommand::SetClearColor(Color{0.1f, 0.1f, 0.1f, 1.0f});
 }
 
-RenderMode Renderer::GetRenderMode() const {
-    return m_renderMode;
+void Renderer::Shutdown() {
+    RenderCommand::Shutdown();
 }
 
-void Renderer::Clear() const {
-    glClear(m_renderClearFlags);
+void Renderer::OnWindowResize(int w, int h) {
+    RenderCommand::SetViewport(0, 0, w, h);
 }
 
 void Renderer::SetClearColor(const Color& color) {
-    m_clearColor = color;
-    glClearColor(m_clearColor.R, m_clearColor.G, m_clearColor.B, m_clearColor.A);
+    RenderCommand::SetClearColor(color);
+}
+
+void Renderer::Clear() {
+    RenderCommand::Clear();
+}
+
+void Renderer::BeginScene() {}
+
+void Renderer::EndScene() {}
+
+void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& va) {
+    if (!shader || !va) {
+        LOGGER_ERROR("Renderer::Submit requires a valid shader and vertex array.");
+        return;
+    }
+
+    shader->Bind();
+    va->Bind();
+    RenderCommand::DrawIndexed(va);
+}
+
+GraphicsAPI Renderer::GetAPI() {
+    return RendererAPI::GetGraphicsAPI();
 }
 
 } // namespace zui
