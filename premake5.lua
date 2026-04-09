@@ -23,7 +23,9 @@ workspace "Zui"
 	architecture "x64"
     language "C++"
     cppdialect "C++20"
-    toolset "clang"
+    if _ACTION == "gmake" or _ACTION == "compile-commands" or _ACTION == "export-compile-commands" then
+        toolset "clang"
+    end
 
 
 
@@ -66,6 +68,9 @@ workspace "Zui"
 
     filter "system:macosx"
         defines { "ZUI_PLATFORM_MACOS" }
+
+    filter "toolset:gmake"
+        buildoptions { "-std=c++20" }
 
     filter {}
 
