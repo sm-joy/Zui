@@ -28,7 +28,6 @@ private:
 
     Clock m_clock;
     Window m_window;
-    Renderer m_renderer;
     Application* m_app;
 };
 
