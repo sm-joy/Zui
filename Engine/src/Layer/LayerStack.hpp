@@ -24,6 +24,7 @@ public:
 	void PopAllLayers();
 
 	void UpdateLayers(LayerContext& layerContext, float dt);
+	void Renderlayers();
 	void PropagateEvent(LayerContext& layerContext, Event& event);
 
 

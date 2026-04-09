@@ -41,6 +41,13 @@ void LayerStack::UpdateLayers(LayerContext& layerContext, float dt) {
         layer->OnUpdate(layerContext, dt);
     }
 }
+
+void LayerStack::Renderlayers() {
+    for (auto& layer : m_layers) {
+        layer->OnRender();
+    }
+}
+
 void LayerStack::PropagateEvent(LayerContext& layerContext, Event& event) {
     for (auto it = m_layers.rbegin(); it != m_layers.rend(); ++it) {
         (*it)->OnEvent(layerContext, event);

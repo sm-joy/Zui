@@ -1,5 +1,5 @@
 #include "Application.hpp"
-
+#include "../Renderer/Renderer.hpp"
 #include "../Event/Event.hpp"
 #include "../Layer/LayerStack.hpp"
 
@@ -14,10 +14,19 @@ void Application::MEvent(Event& event) {
         m_running = false;
         return true;
     });
+    Dispatch(event).On<WindowResizeEvent>([](WindowResizeEvent& e) {
+        Renderer::OnWindowResize(static_cast<int>(e.GetWidth()), static_cast<int>(e.GetHeight()));
+        return false;
+    });
 
     OnEvent(m_layerContext, event);
     m_layerStack->PropagateEvent(m_layerContext, event);
 
+}
+
+void Application::MRender() {
+    OnRender();
+    m_layerStack->Renderlayers();
 }
 
 void Application::MInit() {

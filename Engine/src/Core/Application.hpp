@@ -18,6 +18,7 @@ public:
     virtual void OnInit(LayerContext& layerContex) {}
     virtual void OnEvent(LayerContext& layerContex, Event& event) {}
     virtual void OnUpdate(LayerContext& layerContex, float dt) {}
+    virtual void OnRender() {}
     virtual void OnShutdown() {}
 
     virtual WinConfig SetWindowConfig() { return WinConfig{}; }
@@ -32,6 +33,7 @@ private:
     void MInit();
     void MUpdate(float dt);
     void MEvent(Event& event);
+    void MRender();
     void MProcessLayerCommands();
 };
 
