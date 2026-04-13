@@ -36,9 +36,9 @@ void LayerStack::PopAllLayers() {
     m_layers.clear();
 }
 
-void LayerStack::UpdateLayers(LayerContext& layerContext, float dt) {
+void LayerStack::UpdateLayers(FrameContext& ctx, float dt) {
     for (auto& layer : m_layers) {
-        layer->OnUpdate(layerContext, dt);
+        layer->OnUpdate(ctx, dt);
     }
 }
 
@@ -48,9 +48,9 @@ void LayerStack::Renderlayers() {
     }
 }
 
-void LayerStack::PropagateEvent(LayerContext& layerContext, Event& event) {
+void LayerStack::PropagateEvent(FrameContext& ctx, Event& event) {
     for (auto it = m_layers.rbegin(); it != m_layers.rend(); ++it) {
-        (*it)->OnEvent(layerContext, event);
+        (*it)->OnEvent(ctx, event);
     }
 }
 

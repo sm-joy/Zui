@@ -1,18 +1,19 @@
 #pragma once
+#include "../Core/API.hpp"
 
 namespace zui {
 
-class LayerContext;
 class Event;
+class FrameContext;
 
-class Layer {
+class ZUI_API Layer {
 public:
     virtual ~Layer() = default;
 
     virtual void OnAttach() {}
     virtual void OnDetach() {}
-    virtual void OnEvent(LayerContext& context, Event& event) {}
-    virtual void OnUpdate(LayerContext& context, float dt) {}
+    virtual void OnEvent(FrameContext& ctx, Event& event) {}
+    virtual void OnUpdate(FrameContext& ctx, float dt) {}
     virtual void OnRender() {}
 };
 

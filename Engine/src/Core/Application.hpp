@@ -9,15 +9,17 @@ namespace zui {
 
 class Event;
 class LayerStack;
+class FrameContext;
+class EngineContext;
 
 class ZUI_API Application {
 public:
     Application();
     virtual ~Application();
 
-    virtual void OnInit(LayerContext& layerContex) {}
-    virtual void OnEvent(LayerContext& layerContex, Event& event) {}
-    virtual void OnUpdate(LayerContext& layerContex, float dt) {}
+    virtual void OnInit(FrameContext& ctx) {}
+    virtual void OnEvent(FrameContext& ctx, Event& event) {}
+    virtual void OnUpdate(FrameContext& ctx, float dt) {}
     virtual void OnRender() {}
     virtual void OnShutdown() {}
 
@@ -30,9 +32,9 @@ private:
     std::unique_ptr<LayerStack> m_layerStack;
     LayerContext m_layerContext;
 
-    void MInit();
-    void MUpdate(float dt);
-    void MEvent(Event& event);
+    void MInit(EngineContext& ctx);
+    void MUpdate(EngineContext& ctx, float dt);
+    void MEvent(EngineContext& ctx, Event& event);
     void MRender();
     void MProcessLayerCommands();
 };

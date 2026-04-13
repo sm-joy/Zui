@@ -1,4 +1,5 @@
 #pragma once
+#include "../Core/API.hpp"
 
 #include <cstdint>
 #include <functional>
@@ -27,7 +28,7 @@ struct LayerCommand {
         : Type(type), LayerConstructor(std::move(layerConstructor)), InsertIndex(insertIndex) {}
 };
 
-class LayerContext {
+class ZUI_API LayerContext {
 public:
     using LayerCommandList = std::vector<LayerCommand>;
 

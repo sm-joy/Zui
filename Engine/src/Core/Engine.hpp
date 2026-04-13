@@ -1,13 +1,12 @@
 #pragma once
-#include "../Time/Time.hpp"
 #include "../Window/Window.hpp"
 #include "API.hpp"
-#include "../Renderer/Renderer.hpp"
+#include "EngineContext.hpp"
+#include "../Renderer/Camera.hpp"
+#include <memory>
 
 namespace zui {
-
 class Application;
-
 class ZUI_API Engine {
 public:
     static Engine& GetInstance() {
@@ -17,6 +16,7 @@ public:
 
     void Init(Application* app);
     void Run();
+    const Window& GetWindow() const;
 
 private:
     Engine() = default;
@@ -26,7 +26,7 @@ private:
     Engine(Engine&&) = delete;
     Engine& operator=(Engine&&) = delete;
 
-    Clock m_clock;
+    EngineContext m_engineContext;
     Window m_window;
     Application* m_app;
 };

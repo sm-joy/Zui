@@ -23,9 +23,9 @@ public:
 	void PopLayer();
 	void PopAllLayers();
 
-	void UpdateLayers(LayerContext& layerContext, float dt);
+	void UpdateLayers(FrameContext& ctx, float dt);
 	void Renderlayers();
-	void PropagateEvent(LayerContext& layerContext, Event& event);
+	void PropagateEvent(FrameContext& ctx, Event& event);
 
 
 	bool IsEmpty() const;

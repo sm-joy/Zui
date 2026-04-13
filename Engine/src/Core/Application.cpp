@@ -1,7 +1,9 @@
 #include "Application.hpp"
-#include "../Renderer/Renderer.hpp"
+
 #include "../Event/Event.hpp"
 #include "../Layer/LayerStack.hpp"
+#include "../Renderer/Renderer.hpp"
+#include "FrameContext.hpp"
 
 namespace zui {
 
@@ -9,7 +11,7 @@ Application::Application() : m_layerStack(std::make_unique<LayerStack>()) {}
 
 Application::~Application() = default;
 
-void Application::MEvent(Event& event) {
+void Application::MEvent(EngineContext& ctx, Event& event) {
     Dispatch(event).On<WindowCloseEvent>([this](WindowCloseEvent& e) {
         m_running = false;
         return true;
@@ -19,9 +21,9 @@ void Application::MEvent(Event& event) {
         return false;
     });
 
-    OnEvent(m_layerContext, event);
-    m_layerStack->PropagateEvent(m_layerContext, event);
-
+    FrameContext context{ctx, m_layerContext};
+    OnEvent(context, event);
+    m_layerStack->PropagateEvent(context, event);
 }
 
 void Application::MRender() {
@@ -29,15 +31,16 @@ void Application::MRender() {
     m_layerStack->Renderlayers();
 }
 
-void Application::MInit() {
-    OnInit(m_layerContext);
+void Application::MInit(EngineContext& ctx) {
+    FrameContext context{ctx, m_layerContext};
+    OnInit(context);
     MProcessLayerCommands();
 }
 
-
-void Application::MUpdate(float dt) {
-    OnUpdate(m_layerContext, dt);
-    m_layerStack->UpdateLayers(m_layerContext, dt);
+void Application::MUpdate(EngineContext& ctx, float dt) {
+    FrameContext context{ctx, m_layerContext};
+    OnUpdate(context, dt);
+    m_layerStack->UpdateLayers(context, dt);
     MProcessLayerCommands();
 }
 
