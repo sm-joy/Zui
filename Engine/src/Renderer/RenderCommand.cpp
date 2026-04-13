@@ -36,4 +36,9 @@ void RenderCommand::DrawIndexed(const std::shared_ptr<VertexArray>& va, std::uin
     s_rendererAPI->DrawIndexed(va, indexCount);
 }
 
+void RenderCommand::DrawArrays(const std::shared_ptr<VertexArray>& va, std::uint32_t vertexCount) {
+    if (!s_rendererAPI) return;
+    s_rendererAPI->DrawArrays(va, vertexCount);
+}
+
 } // namespace zui

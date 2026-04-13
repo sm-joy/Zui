@@ -16,6 +16,7 @@ public:
     virtual void SetClearColor(const Color& color) = 0;
     virtual void Clear() = 0;
     virtual void DrawIndexed(const std::shared_ptr<VertexArray>& va, std::uint32_t indexCount = 0) = 0;
+    virtual void DrawArrays(const std::shared_ptr<VertexArray>& va, std::uint32_t vertexCount) = 0;
 
     static GraphicsAPI GetGraphicsAPI() { return s_api; }
     static std::unique_ptr<RendererAPI> Create();

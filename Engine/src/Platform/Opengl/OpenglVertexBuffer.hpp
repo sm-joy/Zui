@@ -12,9 +12,11 @@ public:
     void Unbind() const override;
     void SetLayout(const BufferLayout& layout) override { m_bufferLayout = layout; };
     const BufferLayout& GetBufferLayout() const override { return m_bufferLayout; };
+    std::uint32_t GetSize() const override { return m_size; }
 
 private:
     std::uint32_t m_id = 0;
+    std::uint32_t m_size = 0;
     BufferLayout m_bufferLayout;
 };
 

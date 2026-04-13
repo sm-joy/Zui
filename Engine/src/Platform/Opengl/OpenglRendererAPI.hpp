@@ -11,6 +11,7 @@ public:
     void SetClearColor(const Color& color) override;
     void Clear() override;
     void DrawIndexed(const std::shared_ptr<VertexArray>& va, std::uint32_t indexCount = 0) override;
+    void DrawArrays(const std::shared_ptr<VertexArray>& va, std::uint32_t vertexCount) override;
 };
 
 } // namespace zui

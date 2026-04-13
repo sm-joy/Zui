@@ -3,7 +3,7 @@
 #include <glad/gl.h>
 
 namespace zui {
-OpenglVertexBuffer::OpenglVertexBuffer(const float* vertices, std::uint32_t size) {
+OpenglVertexBuffer::OpenglVertexBuffer(const float* vertices, std::uint32_t size) : m_size(size) {
     glCreateBuffers(1, &m_id);
     glBindBuffer(GL_ARRAY_BUFFER, m_id);
     glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);

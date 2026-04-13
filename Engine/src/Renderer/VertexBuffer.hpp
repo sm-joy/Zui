@@ -61,6 +61,7 @@ public:
 
     virtual void SetLayout(const BufferLayout& layout) = 0;
     virtual const BufferLayout& GetBufferLayout() const = 0;
+    virtual std::uint32_t GetSize() const = 0;
 
     static std::shared_ptr<VertexBuffer> Create(const float* vertices, std::uint32_t size);
 };

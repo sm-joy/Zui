@@ -27,4 +27,12 @@ void OpenglRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& va, std:
     glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 }
 
+void OpenglRendererAPI::DrawArrays(const std::shared_ptr<VertexArray>& va, std::uint32_t vertexCount) {
+    if (!va || vertexCount == 0) {
+        return;
+    }
+
+    glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertexCount));
+}
+
 } // namespace zui

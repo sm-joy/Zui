@@ -15,6 +15,7 @@ public:
     static void SetClearColor(const Color& c);
     static void Clear();
     static void DrawIndexed(const std::shared_ptr<VertexArray>& va, std::uint32_t indexCount = 0);
+    static void DrawArrays(const std::shared_ptr<VertexArray>& va, std::uint32_t vertexCount);
 
 private:
     static std::unique_ptr<RendererAPI> s_rendererAPI;
