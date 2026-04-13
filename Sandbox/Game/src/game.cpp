@@ -1,79 +1,85 @@
-#include <cstdint>
-#include <Zui.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <memory>
+#include <Zui.hpp>
 
 class MainMenuLayer : public zui::Layer {
 public:
-
+    zui::PerspectiveCameraController CameraController{ 500.0f/500.0f };
     std::shared_ptr<zui::Shader> ShaderProgram;
     std::shared_ptr<zui::VertexBuffer> VertexBfr;
-    std::shared_ptr<zui::IndexBuffer> IndexBfr;
     std::shared_ptr<zui::VertexArray> VertexArr;
 
-    const char* VertexSrc = R"(
-#version 330 core
-layout(location = 0) in vec3 a_Position;
+    float Vertices[108] = {
+        -0.5f, -0.5f, -0.5f, 0.5f,  -0.5f, -0.5f, 0.5f,  0.5f,  -0.5f,
+        0.5f,  0.5f,  -0.5f, -0.5f, 0.5f,  -0.5f, -0.5f, -0.5f, -0.5f,
 
-void main() {
-    gl_Position = vec4(a_Position, 1.0);
-}
-)";
+        -0.5f, -0.5f, 0.5f,  0.5f,  -0.5f, 0.5f,  0.5f,  0.5f,  0.5f,
+        0.5f,  0.5f,  0.5f,  -0.5f, 0.5f,  0.5f,  -0.5f, -0.5f, 0.5f,
 
-const char* FragmentSrc = R"(
-#version 330 core
-out vec4 FragColor;
+        -0.5f, 0.5f,  0.5f,  -0.5f, 0.5f,  -0.5f, -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f,  -0.5f, 0.5f,  0.5f,
 
-void main() {
-    FragColor = vec4(1.0, 0.5, 0.2, 1.0); // orange-ish
-}
-)";
+        0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  -0.5f, 0.5f,  -0.5f, -0.5f,
+        0.5f,  -0.5f, -0.5f, 0.5f,  -0.5f, 0.5f,  0.5f,  0.5f,  0.5f,
+
+        -0.5f, -0.5f, -0.5f, 0.5f,  -0.5f, -0.5f, 0.5f,  -0.5f, 0.5f,
+        0.5f,  -0.5f, 0.5f,  -0.5f, -0.5f, 0.5f,  -0.5f, -0.5f, -0.5f,
+
+        -0.5f, 0.5f,  -0.5f, 0.5f,  0.5f,  -0.5f, 0.5f,  0.5f,  0.5f,
+        0.5f,  0.5f,  0.5f,  -0.5f, 0.5f,  0.5f,  -0.5f, 0.5f,  -0.5f,
+    };
+
+    glm::vec3 CubePositions[10] = {glm::vec3(0.0f, 0.0f, 0.0f),    glm::vec3(2.0f, 5.0f, -15.0f),
+                                   glm::vec3(-1.5f, -2.2f, -2.5f), glm::vec3(-3.8f, -2.0f, -12.3f),
+                                   glm::vec3(2.4f, -0.4f, -3.5f),  glm::vec3(-1.7f, 3.0f, -7.5f),
+                                   glm::vec3(1.3f, -2.0f, -2.5f),  glm::vec3(1.5f, 2.0f, -2.5f),
+                                   glm::vec3(1.5f, 0.2f, -1.5f),   glm::vec3(-1.3f, 1.0f, -1.5f)};
 
     void OnAttach() override {
-        LOGGER_TRACE("Heloo from Main Menu Layer");
+        LOGGER_TRACE("Hello from Main Menu Layer");
         zui::Renderer::SetClearColor(zui::colors::DARK_GRAY);
 
-        float vertices[12] = {
-            // positions (x, y, z)
-            -0.5f, -0.5f, 0.0f, // bottom-left
-            0.5f,  -0.5f, 0.0f, // bottom-right
-            0.5f,  0.5f,  0.0f, // top-right
-            -0.5f, 0.5f,  0.0f  // top-left
-        };
-
-        std::uint32_t indices[6] = {
-            0, 1, 2, // first triangle
-            2, 3, 0  // second triangle
-        };
-
         VertexArr = zui::VertexArray::Create();
-        VertexBfr = zui::VertexBuffer::Create(vertices, sizeof(vertices));
-        VertexBfr->SetLayout({
-            {zui::ShaderDataType::FLOAT3, "a_Position"}
-        });
-        IndexBfr = zui::IndexBuffer::Create(indices, 6);
-        std::shared_ptr<zui::ShaderStage> vertexStage =
-            zui::ShaderStage::CreateFromSource(zui::ShaderStageType::VERTEX, VertexSrc);
-        std::shared_ptr<zui::ShaderStage> fragmentStage =
-            zui::ShaderStage::CreateFromSource(zui::ShaderStageType::FRAGMENT, FragmentSrc);
-        ShaderProgram = zui::Shader::Create("Quad",
-                                            std::vector<std::shared_ptr<zui::ShaderStage>>{vertexStage, fragmentStage});
+        VertexBfr = zui::VertexBuffer::Create(Vertices, sizeof(Vertices));
+        VertexBfr->SetLayout({{zui::ShaderDataType::FLOAT3, "aPos"}});
+
+        ShaderProgram = zui::Shader::CreateFromFile("Cube", "Sandbox/assets/basic_shader.glsl");
 
         VertexArr->AddVertexBuffer(VertexBfr);
-        VertexArr->SetIndexBuffer(IndexBfr);
+    }
 
+    void OnUpdate(zui::FrameContext& ctx, float dt) override {
+        CameraController.OnUpdate(dt);
+    }
+
+    void OnEvent(zui::FrameContext& ctx, zui::Event& event) override {
+        CameraController.OnEvent(event);
     }
 
     void OnRender() override {
-        zui::Renderer::Submit(ShaderProgram, VertexArr);
+        zui::Renderer::BeginScene(CameraController.GetCamera());
+        for (unsigned int i = 0; i < 10; i++) {
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, CubePositions[i]);
+            float angle = 20.0f * static_cast<float>(i);
+            model = glm::rotate(model, (float)(zui::GClock::GetElapsedTime()), glm::vec3(0.5f, 1.0f, 0.0f));
+
+            zui::Renderer::Submit(ShaderProgram, VertexArr, model);
+        }
+        zui::Renderer::EndScene();
     }
 };
 
 class Game : public zui::Application {
-    void OnInit(zui::LayerContext& layerContext) override {
+    void OnInit(zui::FrameContext& ctx) override {
         LOGGER_TRACE("Hello from application");
-        layerContext.PushLayer<MainMenuLayer>();
+        ctx.Layer.PushLayer<MainMenuLayer>();
     }
-    zui::WinConfig SetWindowConfig() override { return {.Title = "Game", .Width = 500, .Height = 500}; }
+    zui::WinConfig SetWindowConfig() override {
+        return {.Title = "Game", .Width = 500, .Height = 500, .Resizable = true};
+    }
 };
 
 zui::Application* CreateApplication() {
