@@ -22,6 +22,15 @@ public:
         m_winConfig.EventEmitCallback = std::forward<TFunc>(callback);
     }
 
+    GLFWwindow* GetNativeHandler() const;
+
+    void HideCursor() const;
+    void ShowCursor() const;
+
+    int GetWindowWidth() const;
+    int GetWindowHeight() const;
+    float GetAspectRatio() const;
+
 private:
     WinConfig m_winConfig;
     GLFWwindow* m_windowHandle = nullptr;

@@ -117,6 +117,28 @@ bool Window::ShouldClose() const {
     return glfwWindowShouldClose(m_windowHandle);
 }
 
+GLFWwindow* Window::GetNativeHandler() const {
+    return m_windowHandle;
+}
+
+void Window::HideCursor() const {
+    glfwSetInputMode(m_windowHandle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+void Window::ShowCursor() const {
+    glfwSetInputMode(m_windowHandle, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+int Window::GetWindowWidth() const {
+    return m_winConfig.Width;
+}
+int Window::GetWindowHeight() const {
+    return m_winConfig.Width;
+}
+
+float Window::GetAspectRatio() const {
+    return static_cast<float>(m_winConfig.Width) / static_cast<float>(m_winConfig.Height);
+}
+
 void Window::SetGlfwCallbacks() {
     glfwSetFramebufferSizeCallback(m_windowHandle, [](GLFWwindow* glfwWindow, int width, int height) {
         Window& window = *((Window*)glfwGetWindowUserPointer(glfwWindow));
