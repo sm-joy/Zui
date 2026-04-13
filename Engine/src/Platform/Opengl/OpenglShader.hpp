@@ -31,11 +31,23 @@ public:
 
     void Bind()   const override;
     void Unbind() const override;
+    void SetInt(const std::string& name, int value) const override;
+    void SetIntArray(const std::string& name, int* value, int count) const override;
+    void SetFloat(const std::string& name, float value) const override;
+    void SetDouble(const std::string& name, double value) const override;
+    void SetFloat2(const std::string& name, const glm::vec2& value) const override;
+    void SetFloat3(const std::string& name, const glm::vec3& value) const override;
+    void SetFloat4(const std::string& name, const glm::vec4& value) const override;
+    void SetMat2(const std::string& name, const glm::mat2& value) const override;
+    void SetMat3(const std::string& name, const glm::mat3& value) const override;
+    void SetMat4(const std::string& name, const glm::mat4& value) const override;
     const std::string& GetName() const override { return m_name; }
 
 private:
     std::uint32_t m_id = 0;
     std::string m_name;
+
+    int LocateUniform(const std::string& name) const;
 };
 
 } // namespace zui

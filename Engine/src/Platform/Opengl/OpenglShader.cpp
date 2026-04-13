@@ -1,9 +1,10 @@
 #include "OpenglShader.hpp"
 
 #include "../../Logger/Log.hpp"
-#include "glad/gl.h"
 
+#include <glad/gl.h>
 #include <memory>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace zui {
 
@@ -132,6 +133,51 @@ OpenglShader::~OpenglShader() {
 
 void OpenglShader::Bind()   const { glUseProgram(m_id); }
 void OpenglShader::Unbind() const { glUseProgram(0); }
+
+int OpenglShader::LocateUniform(const std::string& name) const {
+    if (name.empty()) return 0;
+    return glGetUniformLocation(m_id, name.c_str());
+}
+
+void OpenglShader::SetInt(const std::string& name, int value) const {
+    glUniform1i(LocateUniform(name), value);
+}
+
+void OpenglShader::SetIntArray(const std::string& name, int* value, int count) const {
+    glUniform1iv(LocateUniform(name), count, value);
+}
+
+void OpenglShader::SetFloat(const std::string& name, float value) const {
+    glUniform1f(LocateUniform(name), value);
+}
+
+void OpenglShader::SetDouble(const std::string& name, double value) const {
+    glUniform1d(LocateUniform(name), value);
+}
+
+void OpenglShader::SetFloat2(const std::string& name, const glm::vec2& value) const {
+    glUniform2fv(LocateUniform(name), 1, glm::value_ptr(value));
+}
+
+void OpenglShader::SetFloat3(const std::string& name, const glm::vec3& value) const {
+    glUniform3fv(LocateUniform(name), 1, glm::value_ptr(value));
+}
+
+void OpenglShader::SetFloat4(const std::string& name, const glm::vec4& value) const {
+    glUniform4fv(LocateUniform(name), 1, glm::value_ptr(value));
+}
+
+void OpenglShader::SetMat2(const std::string& name, const glm::mat2& value) const {
+    glUniformMatrix2fv(LocateUniform(name), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void OpenglShader::SetMat3(const std::string& name, const glm::mat3& value) const {
+    glUniformMatrix3fv(LocateUniform(name), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void OpenglShader::SetMat4(const std::string& name, const glm::mat4& value) const {
+    glUniformMatrix4fv(LocateUniform(name), 1, GL_FALSE, glm::value_ptr(value));
+}
 
 
 } // namespace zui

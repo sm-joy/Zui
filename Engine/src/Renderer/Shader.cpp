@@ -44,7 +44,7 @@ static std::string Trim(const std::string& value) {
 
 static std::unordered_map<ShaderStageType, std::string> ParseStages(const std::string& src) {
     static std::unordered_map<std::string, ShaderStageType> stageMap = {
-        {"vertex", ShaderStageType::VERTEX},
+        {"vertext", ShaderStageType::VERTEX},
         {"fragment", ShaderStageType::FRAGMENT},
         {"geometry", ShaderStageType::GEOMETRY},
         {"compute", ShaderStageType::COMPUTE},
