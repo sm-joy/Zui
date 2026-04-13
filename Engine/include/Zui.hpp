@@ -7,3 +7,7 @@
 #include "../src/Renderer/Shader.hpp"
 #include "../src/Renderer/VertexBuffer.hpp"
 #include "../src/Renderer/VertexArray.hpp"
+#include "../src/Time/Time.hpp"
+#include "../src/Input/Input.hpp"
+#include "../src/Renderer/CameraController.hpp"
+#include "../src/Core/FrameContext.hpp"
