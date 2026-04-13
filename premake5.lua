@@ -14,7 +14,8 @@ OUTPUT_DIR_CONFIG = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {
     spdlog = ROOT .. "/vendor/spdlog/include",
     glfw = ROOT .. "/vendor/glfw/include",
-    glad = ROOT .. "/vendor/glad/include"
+    glad = ROOT .. "/vendor/glad/include",
+    glm = ROOT .. "/vendor/glm"
 }
 
 
@@ -69,7 +70,7 @@ workspace "Zui"
     filter "system:macosx"
         defines { "ZUI_PLATFORM_MACOS" }
 
-    filter "toolset:gmake"
+    filter "toolset:clang"
         buildoptions { "-std=c++20" }
 
     filter {}

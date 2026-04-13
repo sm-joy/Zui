@@ -17,6 +17,7 @@
     includedirs {
         ROOT .. "/Engine/include",
         IncludeDir.spdlog,
+        IncludeDir.glm
     }
 
     links { "Zui" }

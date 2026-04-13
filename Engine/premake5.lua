@@ -22,6 +22,7 @@ project "Zui"
         IncludeDir.spdlog,
         IncludeDir.glfw,
         IncludeDir.glad,
+        IncludeDir.glm
     }
 
     links { "glfw", "spdlog" }
