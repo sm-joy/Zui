@@ -15,7 +15,8 @@ IncludeDir = {
     spdlog = ROOT .. "/vendor/spdlog/include",
     glfw = ROOT .. "/vendor/glfw/include",
     glad = ROOT .. "/vendor/glad/include",
-    glm = ROOT .. "/vendor/glm"
+    glm = ROOT .. "/vendor/glm",
+    stb = ROOT .. "/vendor/stb"
 }
 
 
@@ -70,8 +71,6 @@ workspace "Zui"
     filter "system:macosx"
         defines { "ZUI_PLATFORM_MACOS" }
 
-    filter "toolset:clang"
-        buildoptions { "-std=c++20" }
 
     filter {}
 

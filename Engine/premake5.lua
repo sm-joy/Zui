@@ -22,7 +22,8 @@ project "Zui"
         IncludeDir.spdlog,
         IncludeDir.glfw,
         IncludeDir.glad,
-        IncludeDir.glm
+        IncludeDir.glm,
+        IncludeDir.stb
     }
 
     links { "glfw", "spdlog" }
@@ -43,6 +44,9 @@ project "Zui"
 
     filter "system:linux"
         links { "GL" }
+    
+    filter "toolset:clang"
+        buildoptions { "-std=c++20" }
 
     filter{}
 
