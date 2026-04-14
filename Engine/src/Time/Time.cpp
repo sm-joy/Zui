@@ -2,6 +2,15 @@
 
 namespace zui {
 
+std::unique_ptr<Clock> GClock::m_clock = nullptr;
+
+void GClock::Init() {
+    m_clock = std::make_unique<Clock>();
+}
+void GClock::Shutdown() {
+    m_clock.reset();
+}
+
 Clock::Clock()
     : m_startTime(HighResClock::now()), m_deltaTime(0.0f), m_rawDeltaTime(0.0f), m_totalTime(0.0f), m_timeScale(1.0f),
       m_isPaused(false), m_frameCount(0), m_fpsUpdateInterval(1.0f), m_fpsAccumulator(0.0f), m_fps(0.0f),

@@ -1,7 +1,9 @@
 #pragma once
 #include <chrono>
+#include <memory>
 #include <string>
 #include <unordered_map>
+#include "../Core/API.hpp"
 
 namespace zui {
 
@@ -9,7 +11,7 @@ using HighResClock = std::chrono::high_resolution_clock;
 using TimePoint = std::chrono::time_point<HighResClock>;
 using Duration = std::chrono::duration<float>;
 
-class Clock {
+class ZUI_API Clock {
 public:
     Clock();
     ~Clock() = default;
@@ -52,6 +54,64 @@ private:
 
     bool m_isPaused;
     bool m_useFixedTimestep;
+};
+
+class ZUI_API GClock {
+public:
+
+    static void Init();
+    static void Shutdown();
+
+    static inline float Tick() {
+        return m_clock->Tick();
+    }
+
+    static inline void Pause() {
+        m_clock->Pause();
+    }
+
+    static inline void Resume() {
+        m_clock->Resume();
+    }
+
+    static inline void TogglePause() {
+        m_clock->TogglePause();
+    }
+
+    static inline bool IsPaused() {
+        return m_clock->IsPaused();
+    }
+
+    static inline float GetFps() {
+        return m_clock->GetFps();
+    }
+
+    static inline float GetDeltaTime() {
+        return m_clock->GetDeltaTime();
+    }
+
+    static inline double GetElapsedTime() {
+        return m_clock->GetElapsedTime();
+    }
+
+    static inline float GetTimeScale() {
+        return m_clock->GetTimeScale();
+    }
+
+    static inline void SetTimeScale(float ts) {
+        m_clock->SetTimeScale(ts);
+    }
+
+    static inline void Reset() {
+        m_clock->Reset();
+    }
+
+    static inline void SetFpsUpdateInterval(float interval) {
+        m_clock->SetFpsUpdateInterval(interval);
+    }
+
+private:
+    static std::unique_ptr<Clock> m_clock;
 };
 
 class Profiler {
