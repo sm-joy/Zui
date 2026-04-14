@@ -11,3 +11,4 @@
 #include "../src/Input/Input.hpp"
 #include "../src/Renderer/CameraController.hpp"
 #include "../src/Core/FrameContext.hpp"
+#include "../src/Renderer/Texture.hpp"
