@@ -12,3 +12,5 @@
 #include "../src/Renderer/CameraController.hpp"
 #include "../src/Core/FrameContext.hpp"
 #include "../src/Renderer/Texture.hpp"
+#include "../src/Renderer/Material.hpp"
+#include "../src/Renderer/Mesh.hpp"
