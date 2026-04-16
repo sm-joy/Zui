@@ -1,11 +1,16 @@
 #include "Renderer.hpp"
 
 #include "../Logger/Log.hpp"
+#include "../Time/Time.hpp"
 #include "Camera.hpp"
+#include "Material.hpp"
+#include "Mesh.hpp"
 #include "RenderCommand.hpp"
 #include "RendererAPI.hpp"
 #include "Shader.hpp"
 #include "VertexArray.hpp"
+
+#include <memory>
 
 namespace zui {
 
@@ -39,12 +44,14 @@ static std::uint32_t CalculateVertexCount(const std::shared_ptr<VertexArray>& va
 }
 
 void Renderer::Init() {
+    SCOPED_PROFILE("Renderer Init");
     s_sceneData = std::make_unique<SceneData>();
     RenderCommand::Init();
     RenderCommand::SetClearColor(Color{0.1f, 0.1f, 0.1f, 1.0f});
 }
 
 void Renderer::Shutdown() {
+    SCOPED_PROFILE("Renderer Shutdown");
     s_sceneData.reset();
     RenderCommand::Shutdown();
 }
@@ -67,60 +74,37 @@ void Renderer::BeginScene(PerspectiveCamera& camera) {
 
 void Renderer::EndScene() {}
 
-void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& va,
-                      const glm::mat4& transform) {
-    if (!va) {
+void Renderer::Submit(const std::shared_ptr<Mesh>& mesh, const std::shared_ptr<Material>& material, const glm::mat4& transform) {
+    if (!mesh) {
+        LOGGER_ERROR("Renderer::Submit requires a valid mesh.");
+        return;
+    }
+    if (!material) {
+        LOGGER_ERROR("Renderer::Submit requires a valid material.");
+        return;
+    }
+    if (!mesh->GetVertexArray()) {
         LOGGER_ERROR("Renderer::Submit requires a valid vertex array.");
         return;
     }
-    if (!shader) {
-        LOGGER_ERROR("Renderer::Submit requires a valid shader.");
+    if (!material->GetShader()) {
+        LOGGER_ERROR("Renderer::Submit requires a valid material.");
         return;
     }
 
-    const std::shared_ptr<IndexBuffer>& indexBuffer = va->GetIndexBuffer();
-
-    shader->Bind();
+    material->Bind();
+    const std::shared_ptr<Shader> shader = material->GetShader();
     shader->SetMat4("u_ViewProjection", s_sceneData->ViewProjectionMatrix);
     shader->SetMat4("u_Model", transform);
 
-    va->Bind();
-    if (indexBuffer) {
-        RenderCommand::DrawIndexed(va);
-        return;
+    mesh->Bind();
+    if (mesh->IsIndexed()) {
+        RenderCommand::DrawIndexed(mesh->GetVertexArray());
     }
-    const std::uint32_t vertexCount = CalculateVertexCount(va);
-    if (vertexCount == 0) {
-        LOGGER_ERROR("Renderer::Submit could not determine a valid vertex count for non-indexed drawing.");
-        return;
+    else {
+        RenderCommand::DrawArrays(mesh->GetVertexArray(), mesh->GetVertexCount());
     }
 
-    RenderCommand::DrawArrays(va, vertexCount);
-}
-
-void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& va,
-                      std::uint32_t vertexCount, const glm::mat4& transform) {
-    if (!shader || !va) {
-        LOGGER_ERROR("Renderer::Submit requires a valid shader and vertex array.");
-        return;
-    }
-
-    shader->Bind();
-    shader->SetMat4("u_ViewProjection", s_sceneData->ViewProjectionMatrix);
-    shader->SetMat4("u_Model", transform);
-    va->Bind();
-
-    if (va->GetIndexBuffer()) {
-        RenderCommand::DrawIndexed(va);
-        return;
-    }
-
-    if (vertexCount <= 0) {
-        LOGGER_ERROR("Renderer::Submit requires a non-zero vertex count when drawing without an index buffer.");
-        return;
-    }
-
-    RenderCommand::DrawArrays(va, vertexCount);
 }
 
 GraphicsAPI Renderer::GetAPI() {
