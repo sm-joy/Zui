@@ -1,13 +1,18 @@
 #include "Time.hpp"
 
+#include "../Logger/Log.hpp"
+
 namespace zui {
 
 std::unique_ptr<Clock> GClock::m_clock = nullptr;
+std::unique_ptr<Profiler> GProfiler::m_profiler = nullptr;
 
 void GClock::Init() {
+    SCOPED_PROFILE("GClock Init");
     m_clock = std::make_unique<Clock>();
 }
 void GClock::Shutdown() {
+    SCOPED_PROFILE("GClock Shutdown");
     m_clock.reset();
 }
 
@@ -114,6 +119,31 @@ float Profiler::GetDuration(const std::string& label) {
     TimePoint& endTimePoint = it->second;
 
     return Duration(endTimePoint - beginTimePoint).count();
+}
+
+void GProfiler::Init() {
+    LOGGER_INFO("GProfiler Init Start.");
+    m_profiler = std::make_unique<Profiler>();
+    LOGGER_INFO("GProfiler Init End.");
+}
+
+void GProfiler::Shutdown() {
+    LOGGER_INFO("GProfiler Shutdown Start.");
+    m_profiler.reset();
+    LOGGER_INFO("GProfiler Shutdown End.");
+}
+
+ScopedProfile::ScopedProfile(const std::string& label) : m_label(label) {
+    LOGGER_INFO("{} Start.", m_label);
+    GProfiler::Begin(m_label);
+}
+
+ScopedProfile::~ScopedProfile() {
+    GProfiler::End(m_label);
+    float duration = GProfiler::GetDuration(m_label);
+
+    LOGGER_INFO("{} End.", m_label);
+    LOGGER_INFO("[PROFILE] {} took {} ms", m_label, duration);
 }
 
 } // namespace zui
