@@ -2,8 +2,6 @@
 #include "../Window/Window.hpp"
 #include "API.hpp"
 #include "EngineContext.hpp"
-#include "../Renderer/Camera.hpp"
-#include <memory>
 
 namespace zui {
 class Application;

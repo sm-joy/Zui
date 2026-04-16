@@ -2,6 +2,7 @@
 
 #include "../Core/API.hpp"
 
+#include <memory>
 #include <spdlog/spdlog.h>
 // enum class LogChannel : uint8_t { CORE, RENDERER, ASSETS, AUDIO, TIME, LOGGER, EVENT, WINDOW, PLATFORM, COUNT };
 // i will add this later

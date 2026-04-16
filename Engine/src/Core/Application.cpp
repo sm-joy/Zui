@@ -4,6 +4,7 @@
 #include "../Layer/LayerStack.hpp"
 #include "../Renderer/Renderer.hpp"
 #include "FrameContext.hpp"
+#include "../Time/Time.hpp"
 
 namespace zui {
 
@@ -32,6 +33,7 @@ void Application::MRender() {
 }
 
 void Application::MInit(EngineContext& ctx) {
+    SCOPED_PROFILE("Aplication Internal Init");
     FrameContext context{ctx, m_layerContext};
     OnInit(context);
     MProcessLayerCommands();

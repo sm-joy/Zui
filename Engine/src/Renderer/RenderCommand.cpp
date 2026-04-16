@@ -1,11 +1,13 @@
 #include "RenderCommand.hpp"
 #include "RendererAPI.hpp"
+#include "../Time/Time.hpp"
 
 namespace zui {
 
 std::unique_ptr<RendererAPI> RenderCommand::s_rendererAPI = nullptr;
 
 void RenderCommand::Init() {
+    SCOPED_PROFILE("RendererCommand Init");
     if (!s_rendererAPI) {
         s_rendererAPI = RendererAPI::Create();
     }
@@ -13,6 +15,7 @@ void RenderCommand::Init() {
 }
 
 void RenderCommand::Shutdown() {
+    SCOPED_PROFILE("RendererCommand Shutdown");
     s_rendererAPI.reset();
 }
 

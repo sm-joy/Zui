@@ -1,6 +1,6 @@
 #include "Input.hpp"
 #include "../Platform/GLFW/GLFWInput.hpp"
-#include "../Logger/Log.hpp"
+#include "../Time/Time.hpp"
 #include <memory>
 
 namespace zui {
@@ -8,13 +8,13 @@ namespace zui {
 std::unique_ptr<Input> Input::s_instance = nullptr;
 
 void Input::Init() {
+    SCOPED_PROFILE("Input Init");
     s_instance = std::make_unique<GLFWInput>();
-    LOGGER_TRACE("[INPUT] Initialized.");
 }
 
 void Input::Shutdown() {
+    SCOPED_PROFILE("Input Shutdown");
     s_instance.reset();
-    LOGGER_TRACE("[INPUT] Shutdown.");
 }
 
 void Input::OnUpdate() {
