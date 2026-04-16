@@ -22,5 +22,8 @@
 
     links { "Zui" }
 
+    filter "toolset:clang"
+        buildoptions { "-std=c++20" }
+
     filter {}
 
