@@ -1,6 +1,7 @@
 #include "RenderCommand.hpp"
-#include "RendererAPI.hpp"
+
 #include "../Time/Time.hpp"
+#include "RendererAPI.hpp"
 
 namespace zui {
 
@@ -20,28 +21,35 @@ void RenderCommand::Shutdown() {
 }
 
 void RenderCommand::SetViewport(int x, int y, int w, int h) {
-    if (!s_rendererAPI) return;
+    if (!s_rendererAPI)
+        return;
     s_rendererAPI->SetViewport(x, y, w, h);
 }
 
 void RenderCommand::SetClearColor(const Color& c) {
-    if (!s_rendererAPI) return;
+    if (!s_rendererAPI)
+        return;
     s_rendererAPI->SetClearColor(c);
 }
 
 void RenderCommand::Clear() {
-    if (!s_rendererAPI) return;
+    if (!s_rendererAPI)
+        return;
     s_rendererAPI->Clear();
 }
 
-void RenderCommand::DrawIndexed(const std::shared_ptr<VertexArray>& va, std::uint32_t indexCount) {
-    if (!s_rendererAPI) return;
-    s_rendererAPI->DrawIndexed(va, indexCount);
+void RenderCommand::DrawIndexed(const std::shared_ptr<VertexArray>& va, std::uint32_t indexCount,
+                                std::uint32_t baseIndex, std::uint32_t baseVertex) {
+    if (!s_rendererAPI)
+        return;
+    s_rendererAPI->DrawIndexed(va, indexCount, baseIndex, baseVertex);
 }
 
-void RenderCommand::DrawArrays(const std::shared_ptr<VertexArray>& va, std::uint32_t vertexCount) {
-    if (!s_rendererAPI) return;
-    s_rendererAPI->DrawArrays(va, vertexCount);
+void RenderCommand::DrawArrays(const std::shared_ptr<VertexArray>& va, std::uint32_t vertexCount,
+                               std::uint32_t baseVertex) {
+    if (!s_rendererAPI)
+        return;
+    s_rendererAPI->DrawArrays(va, vertexCount, baseVertex);
 }
 
 } // namespace zui

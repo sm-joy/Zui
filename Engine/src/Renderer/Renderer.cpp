@@ -11,6 +11,7 @@
 #include "VertexArray.hpp"
 
 #include <memory>
+#include <vector>
 
 namespace zui {
 
@@ -74,37 +75,41 @@ void Renderer::BeginScene(PerspectiveCamera& camera) {
 
 void Renderer::EndScene() {}
 
-void Renderer::Submit(const std::shared_ptr<Mesh>& mesh, const std::shared_ptr<Material>& material, const glm::mat4& transform) {
+void Renderer::Submit(const std::shared_ptr<Mesh>& mesh, const glm::mat4& transform) {
     if (!mesh) {
         LOGGER_ERROR("Renderer::Submit requires a valid mesh.");
-        return;
-    }
-    if (!material) {
-        LOGGER_ERROR("Renderer::Submit requires a valid material.");
         return;
     }
     if (!mesh->GetVertexArray()) {
         LOGGER_ERROR("Renderer::Submit requires a valid vertex array.");
         return;
     }
-    if (!material->GetShader()) {
-        LOGGER_ERROR("Renderer::Submit requires a valid material.");
-        return;
-    }
 
-    material->Bind();
-    const std::shared_ptr<Shader> shader = material->GetShader();
-    shader->SetMat4("u_ViewProjection", s_sceneData->ViewProjectionMatrix);
-    shader->SetMat4("u_Model", transform);
+    const std::vector<Mesh::SubMesh>& subMeshes = mesh->GetSubMeshes();
+    const std::vector<std::shared_ptr<Material>>& materials = mesh->GetMaterials();
 
-    mesh->Bind();
-    if (mesh->IsIndexed()) {
-        RenderCommand::DrawIndexed(mesh->GetVertexArray());
-    }
-    else {
-        RenderCommand::DrawArrays(mesh->GetVertexArray(), mesh->GetVertexCount());
-    }
+    for (const auto& subMesh : mesh->GetSubMeshes()) {
+        const std::shared_ptr<Material>& subMeshMaterial =
+            (subMesh.MaterialIndex < materials.size() && materials[subMesh.MaterialIndex])
+                ? materials[subMesh.MaterialIndex]
+                : nullptr;
+        if (!subMeshMaterial || !subMeshMaterial->GetShader()) {
+            LOGGER_WARN("Renderer::Submit skipping submesh — no valid material.");
+            continue;
+        }
+        subMeshMaterial->Bind();
+        const std::shared_ptr<Shader>& shader = subMeshMaterial->GetShader();
+        shader->SetMat4("u_ViewProjection", s_sceneData->ViewProjectionMatrix);
+        shader->SetMat4("u_Model", transform);
 
+        mesh->Bind();
+        if (mesh->IsIndexed()) {
+            RenderCommand::DrawIndexed(mesh->GetVertexArray(), subMesh.IndexCount, subMesh.BaseIndex,
+                                       subMesh.BaseVertex);
+        } else {
+            RenderCommand::DrawArrays(mesh->GetVertexArray(), subMesh.VertexCount, subMesh.BaseVertex);
+        }
+    }
 }
 
 GraphicsAPI Renderer::GetAPI() {

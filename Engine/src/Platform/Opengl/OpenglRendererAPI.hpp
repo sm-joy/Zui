@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Renderer/RendererAPI.hpp"
+
 #include <memory>
 
 namespace zui {
@@ -10,8 +11,10 @@ public:
     void SetViewport(int x, int y, int w, int h) override;
     void SetClearColor(const Color& color) override;
     void Clear() override;
-    void DrawIndexed(const std::shared_ptr<VertexArray>& va, std::uint32_t indexCount = 0) override;
-    void DrawArrays(const std::shared_ptr<VertexArray>& va, std::uint32_t vertexCount) override;
+    void DrawIndexed(const std::shared_ptr<VertexArray>& va, std::uint32_t indexCount = 0, std::uint32_t baseIndex = 0,
+                     std::uint32_t baseVertex = 0) override;
+    void DrawArrays(const std::shared_ptr<VertexArray>& va, std::uint32_t vertexCount,
+                    std::uint32_t baseVertex = 0) override;
 };
 
 } // namespace zui
